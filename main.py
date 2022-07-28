@@ -6,19 +6,19 @@ from twilio.rest import Client
 
 def send_sms(trash, tel_number):
     #print(f"odbiór {trash}")
-    account_sid = '[Sid]'
-    auth_token = '[AuthToken]'
+    account_sid = os.environ.get("TWILIO_SID")
+    auth_token = os.environ.get("TWILIO_TOKEN")
     client = Client(account_sid, auth_token)
 
-    message = client.messages.create(messaging_service_sid='XXXXX',
+    message = client.messages.create(messaging_service_sid=os.environ.get("TWILIO_MES_SER_SID"),
                                      body=f'Jutro odbiór {trash}, nie zapomnij o wystawieniu worków 🗑️',
-                                     from_='twilio_number',
+                                     from_=os.environ.get("TWILIO_NUMBER"),
                                      to=tel_number
                                      )
     print(message.sid)
 
 
-number_lists = ['tel_number_1', '+tel_number_2']
+number_lists = [os.environ.get("MOBILE_NUMBER_1"), os.environ.get("MOBILE_NUMBER_2")]
 data = pandas.read_csv("data.csv")
 current_month = datetime.now().month
 current_day = datetime.now().day
